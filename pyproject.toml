@@ -1,0 +1,24 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["training", "serving"]
+omit = [
+    "*/registry.py",       # thin SQLAlchemy DB layer — needs a real Postgres to test meaningfully
+    "*/celery_app.py",     # Celery app config/wiring, not logic
+    "*/tasks.py",          # Celery task glue — thin wrappers around already-tested functions
+    "*/evaluate.py",       # human-facing CLI tool, not exercised by tests
+    "*/logging_config.py", # logging setup, not business logic
+]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true

@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Fraud Detection API",
+    "description": "Endpoints for the fraud-detection-ml service. See docs/API.md for full reference. Set the `base_url` and `api_key` collection variables before running.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8088", "type": "string" },
+    { "key": "api_key", "value": "your-api-key-here", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Liveness check. No auth required."
+      },
+      "response": []
+    },
+    {
+      "name": "Predict",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-Key", "value": "{{api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Time\": 0,\n  \"V1\": -1.36, \"V2\": -0.07, \"V3\": 2.54, \"V4\": 1.38, \"V5\": -0.34,\n  \"V6\": 0.46, \"V7\": 0.24, \"V8\": 0.10, \"V9\": 0.36, \"V10\": 0.09,\n  \"V11\": -0.55, \"V12\": -0.62, \"V13\": -0.99, \"V14\": -0.31, \"V15\": 1.47,\n  \"V16\": -0.47, \"V17\": 0.21, \"V18\": 0.03, \"V19\": 0.40, \"V20\": 0.25,\n  \"V21\": -0.02, \"V22\": 0.28, \"V23\": -0.11, \"V24\": 0.07, \"V25\": 0.13,\n  \"V26\": -0.19, \"V27\": 0.13, \"V28\": -0.02, \"Amount\": 149.62\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{base_url}}/predict",
+          "host": ["{{base_url}}"],
+          "path": ["predict"]
+        },
+        "description": "Runs fraud inference on a single transaction. Auth required. Rate-limited to 20/minute per IP."
+      },
+      "response": []
+    },
+    {
+      "name": "Predict + Explain",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-Key", "value": "{{api_key}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"Time\": 0,\n  \"V1\": -1.36, \"V2\": -0.07, \"V3\": 2.54, \"V4\": 1.38, \"V5\": -0.34,\n  \"V6\": 0.46, \"V7\": 0.24, \"V8\": 0.10, \"V9\": 0.36, \"V10\": 0.09,\n  \"V11\": -0.55, \"V12\": -0.62, \"V13\": -0.99, \"V14\": -0.31, \"V15\": 1.47,\n  \"V16\": -0.47, \"V17\": 0.21, \"V18\": 0.03, \"V19\": 0.40, \"V20\": 0.25,\n  \"V21\": -0.02, \"V22\": 0.28, \"V23\": -0.11, \"V24\": 0.07, \"V25\": 0.13,\n  \"V26\": -0.19, \"V27\": 0.13, \"V28\": -0.02, \"Amount\": 149.62\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{base_url}}/predict/explain",
+          "host": ["{{base_url}}"],
+          "path": ["predict", "explain"]
+        },
+        "description": "Same as /predict, plus a SHAP breakdown of the top contributing features. Auth required. Rate-limited to 10/minute per IP."
+      },
+      "response": []
+    },
+    {
+      "name": "Model Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/model/status",
+          "host": ["{{base_url}}"],
+          "path": ["model", "status"]
+        },
+        "description": "Currently active model version and its holdout metrics. No auth required."
+      },
+      "response": []
+    },
+    {
+      "name": "Model Drift",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-Key", "value": "{{api_key}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/model/drift?limit=500",
+          "host": ["{{base_url}}"],
+          "path": ["model", "drift"],
+          "query": [
+            { "key": "limit", "value": "500", "description": "Max recent predictions to check against (default 500)" }
+          ]
+        },
+        "description": "Evidently-based drift check against recent live predictions. Auth required. Returns insufficient_data: true below 30 recent predictions."
+      },
+      "response": []
+    },
+    {
+      "name": "Model Reload",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-Key", "value": "{{api_key}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/model/reload",
+          "host": ["{{base_url}}"],
+          "path": ["model", "reload"]
+        },
+        "description": "Reloads the active model in the worker process handling this request. Auth required. NOTE: api runs 4 processes — this only reloads one of them. Use `docker compose restart api` for a guaranteed full reload."
+      },
+      "response": []
+    },
+    {
+      "name": "Prometheus Metrics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/metrics",
+          "host": ["{{base_url}}"],
+          "path": ["metrics"]
+        },
+        "description": "Prometheus-format metrics. Unauthenticated by design (network-level access control is the intended protection for scrapers)."
+      },
+      "response": []
+    }
+  ]
+}

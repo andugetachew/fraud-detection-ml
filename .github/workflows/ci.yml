@@ -1,0 +1,49 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff==0.5.0
+      - run: ruff check training/ serving/ tests/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements-dev.txt
+      - env:
+          PYTHONPATH: training:serving
+        run: pytest -v --tb=short --cov --cov-report=term-missing
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t fraud-detection-ml:ci .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_API }}"
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_WORKER }}"
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_BEAT }}"
