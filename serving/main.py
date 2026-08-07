@@ -4,27 +4,26 @@ import time
 from pathlib import Path
 
 import pandas as pd
+from auth import verify_api_key
 from fastapi import Depends, FastAPI, HTTPException, Request
+from predict import store
 from prometheus_client import Counter
 from prometheus_fastapi_instrumentator import Instrumentator
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-
 from schemas import (
-    TransactionInput,
-    PredictionResponse,
-    ModelStatusResponse,
     ExplanationResponse,
+    ModelStatusResponse,
+    PredictionResponse,
+    TransactionInput,
 )
-from predict import store
-from auth import verify_api_key
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 sys.path.append(str(Path(__file__).resolve().parent.parent / "training"))
-from registry import get_recent_predictions  # noqa: E402
+from celery_app import app as celery_app  # noqa: E402
 from drift import compute_drift  # noqa: E402
 from logging_config import get_logger  # noqa: E402
-from celery_app import app as celery_app  # noqa: E402
+from registry import get_recent_predictions  # noqa: E402
 
 logger = get_logger(__name__)
 limiter = Limiter(key_func=get_remote_address)

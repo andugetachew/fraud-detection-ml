@@ -1,6 +1,5 @@
 import pytest
 from pydantic import ValidationError
-
 from schemas import TransactionInput
 
 VALID_PAYLOAD = {

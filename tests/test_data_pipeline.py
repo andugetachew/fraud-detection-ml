@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-
-from data_pipeline import build_features, split_data, load_raw_data
+from data_pipeline import build_features, load_raw_data, split_data
 
 
 @pytest.fixture

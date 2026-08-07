@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
-
 import train
-from train import train_model, evaluate_model
+from train import evaluate_model, train_model
 
 
 def make_synthetic_split(n=300, seed=0):

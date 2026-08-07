@@ -6,8 +6,8 @@ based on column type and sample size) instead of a single hand-rolled
 mean-shift heuristic, and is the standard, recognized tool for this.
 """
 import pandas as pd
-from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
+from evidently.report import Report
 
 # Below this, per-column statistical tests (KS-test, PSI, etc.) are
 # unreliable — a single point compared against a distribution will almost

@@ -9,7 +9,6 @@ Neon round-trip. No test caught it because config.py values are only
 ever exercised at import time — this test exercises the actual formula.
 """
 import importlib
-import os
 
 
 def test_debug_true_means_eager(monkeypatch):

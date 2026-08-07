@@ -1,12 +1,11 @@
 import json
 
 import pandas as pd
-
 from celery_app import app
-from train import main as run_training
-from registry import get_active_version, get_recent_predictions, log_prediction
 from drift import compute_drift
 from logging_config import get_logger
+from registry import get_active_version, get_recent_predictions, log_prediction
+from train import main as run_training
 
 logger = get_logger(__name__)
 

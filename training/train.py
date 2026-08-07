@@ -9,13 +9,12 @@ import argparse
 from datetime import datetime, timezone
 
 import joblib
-from xgboost import XGBClassifier
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
-
 from config import ARTIFACTS_DIR, RANDOM_STATE
-from data_pipeline import load_raw_data, build_features, split_data
-from registry import register_version, activate_version
+from data_pipeline import build_features, load_raw_data, split_data
 from logging_config import get_logger
+from registry import activate_version, register_version
+from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
+from xgboost import XGBClassifier
 
 logger = get_logger(__name__)
 

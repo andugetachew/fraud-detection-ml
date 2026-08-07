@@ -5,12 +5,9 @@ Serving reads from this same table to know which artifact file to load.
 import json
 from datetime import datetime, timezone
 
-from sqlalchemy import (
-    create_engine, Column, Integer, String, Float, Boolean, DateTime, Text
-)
-from sqlalchemy.orm import sessionmaker, declarative_base
-
 from config import DATABASE_URL
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base = declarative_base()
 # pool_pre_ping: tests each connection with a lightweight query before reuse,

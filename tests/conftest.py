@@ -1,5 +1,5 @@
-import sys
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -58,9 +58,9 @@ def api_client(monkeypatch):
     in main.py and predict.py without needing live Neon, Redis, or a
     trained model file."""
     import joblib
-    import shap
     import pandas
     import registry
+    import shap
     from prometheus_client import REGISTRY
 
     monkeypatch.setattr(joblib, "load", lambda path: {"model": FakeModel(), "scaler": FakeScaler()})

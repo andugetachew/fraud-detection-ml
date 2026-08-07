@@ -8,11 +8,10 @@ and place it at data/creditcard.csv — see README.md.
 Columns: Time, V1..V28 (PCA-anonymized features), Amount, Class (0=legit, 1=fraud).
 """
 import pandas as pd
+from config import RANDOM_STATE, RAW_DATA_PATH, TARGET_COLUMN, TEST_SIZE
+from data_validation import validate_raw_data
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
-from config import RAW_DATA_PATH, TARGET_COLUMN, TEST_SIZE, RANDOM_STATE
-from data_validation import validate_raw_data
 
 
 def load_raw_data() -> pd.DataFrame:
