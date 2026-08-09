@@ -10,3 +10,4 @@ artifacts/
 .ruff_cache/
 .coverage
 htmlcov/celerybeat-schedule
+celerybeat-schedule
