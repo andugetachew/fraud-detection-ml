@@ -22,9 +22,14 @@ WORKDIR /app
 COPY --from=builder /root/.local /home/appuser/.local
 COPY training/ ./training/
 COPY serving/ ./serving/
-RUN chown -R appuser:appuser /app
+RUN chown -R appuser:appuser /app /home/appuser/.local
 
 USER appuser
 ENV PATH=/home/appuser/.local/bin:$PATH
+WORKDIR /app/serving
 
-CMD ["sh", "-c", "cd /app/serving && exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 4"]
+# Build-time sanity check: fail loudly here (clear build log) rather than
+# with a vague runtime "not found" if the copy/permissions are ever wrong.
+RUN /home/appuser/.local/bin/uvicorn --version
+
+CMD ["sh", "-c", "/home/appuser/.local/bin/uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 4"]
