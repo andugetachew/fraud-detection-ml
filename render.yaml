@@ -2,6 +2,7 @@ services:
   - type: web
     name: fraud-detection-ml-api
     env: docker
+    plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
     dockerCommand: >
