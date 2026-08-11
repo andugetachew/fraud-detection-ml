@@ -19,4 +19,4 @@ WORKDIR /app/serving
 # with a vague runtime failure later.
 RUN python -m uvicorn --version
 
-CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 4"]
+CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-4}"]
