@@ -6,7 +6,6 @@ __pycache__/
 .github/
 .env
 data/
-artifacts/
 tests/
 *.db
 .pytest_cache/
