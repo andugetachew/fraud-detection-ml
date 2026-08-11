@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY training/ ./training/
 COPY serving/ ./serving/
+COPY artifacts/ ./artifacts/
 RUN chown -R appuser:appuser /app
 
 USER appuser
