@@ -2,11 +2,10 @@ services:
   - type: web
     name: fraud-detection-ml-api
     env: docker
-    plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
     dockerCommand: >
-      sh -c "cd /app/serving && uvicorn main:app --host 0.0.0.0 --port $PORT --workers 4"
+      sh -c "cd /app/serving && python -m uvicorn main:app --host 0.0.0.0 --port $PORT --workers 4"
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
@@ -14,6 +13,36 @@ services:
       - key: REDIS_URL
         sync: false
       - key: API_KEY
+        sync: false
+      - key: DEBUG
+        value: "false"
+
+  - type: worker
+    name: fraud-detection-ml-worker
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: >
+      sh -c "cd /app/training && python -m celery -A celery_app worker --loglevel=info"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: DEBUG
+        value: "false"
+
+  - type: worker
+    name: fraud-detection-ml-beat
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: >
+      sh -c "cd /app/training && python -m celery -A celery_app beat --loglevel=info"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
         sync: false
       - key: DEBUG
         value: "false"

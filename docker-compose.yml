@@ -4,7 +4,7 @@ services:
 
   api:
     build: .
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     working_dir: /app/serving
     ports:
       - "8088:8000"
@@ -21,7 +21,7 @@ services:
 
   worker:
     build: .
-    command: celery -A celery_app worker --loglevel=info
+    command: python -m celery -A celery_app worker --loglevel=info
     working_dir: /app/training
     env_file: .env
     environment:
@@ -35,7 +35,7 @@ services:
 
   beat:
     build: .
-    command: celery -A celery_app beat --loglevel=info
+    command: python -m celery -A celery_app beat --loglevel=info
     working_dir: /app/training
     env_file: .env
     environment:
