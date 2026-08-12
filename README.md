@@ -1,5 +1,10 @@
 # Fraud Detection ML Platform
 
+![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen) ![Tests](https://img.shields.io/badge/tests-40%20passed-brightgreen) ![Python](https://img.shields.io/badge/python-3.12-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-enabled-009688) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-blue) ![Redis](https://img.shields.io/badge/Redis-7-red) ![Celery](https://img.shields.io/badge/Celery-enabled-green) ![Docker](https://img.shields.io/badge/Docker-enabled-blue) ![License](https://img.shields.io/badge/license-MIT-yellow)
+
+**Live:** https://fraud-detection-ml-api-l8s7.onrender.com — `api` is deployed and live on Render (free tier, may take ~50s to wake from idle). `worker`/`beat` run locally only for now (Render's Background Workers require a paid plan — no free tier for that service type).
+
+
 Production-ready fraud detection system built with XGBoost, FastAPI,
 Celery, Redis, Docker, and Prometheus.
 
@@ -269,3 +274,17 @@ a recognized library did the job better.
 - Each model version stores a CSV sample (`REFERENCE_SAMPLE_SIZE=5000`
   rows) of raw training features — Evidently needs real reference rows
   to run its statistical tests, not just summary stats.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+  ---
+
+**Andualem Getachew**
+[![GitHub](https://img.shields.io/badge/GitHub-andugetachew-black?logo=github)](https://github.com/andugetachew)
+[![Email](https://img.shields.io/badge/Email-andugeta41%40gmail.com-red?logo=gmail)](mailto:andugeta41@gmail.com)
