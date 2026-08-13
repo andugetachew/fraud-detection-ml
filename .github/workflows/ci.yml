@@ -45,5 +45,3 @@ jobs:
       - name: Trigger Render deploy
         run: |
           curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_API }}"
-          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_WORKER }}"
-          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_BEAT }}"
