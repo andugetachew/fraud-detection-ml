@@ -2,11 +2,20 @@
 
 ![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen) ![Tests](https://img.shields.io/badge/tests-40%20passed-brightgreen) ![Python](https://img.shields.io/badge/python-3.12-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-enabled-009688) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-blue) ![Redis](https://img.shields.io/badge/Redis-7-red) ![Celery](https://img.shields.io/badge/Celery-enabled-green) ![Docker](https://img.shields.io/badge/Docker-enabled-blue) ![License](https://img.shields.io/badge/license-MIT-yellow)
 
-**Live:** https://fraud-detection-ml-api-l8s7.onrender.com — `api` is deployed and live on Render (free tier, may take ~50s to wake from idle). `worker`/`beat` run locally only for now (Render's Background Workers require a paid plan — no free tier for that service type).
+
+[![CI](https://github.com/andugetachew/fraud-detection-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/andugetachew/fraud-detection-ml/actions)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://github.com/andugetachew/fraud-detection-ml/blob/main/docs/fraud-detection-api.postman_collection.json)
+
+## 🌐 Live
+
+| | URL |
+|--|--|
+| **API** | https://fraud-detection-ml-api-l8s7.onrender.com |
+| **Docs** | https://fraud-detection-ml-api-l8s7.onrender.com/docs |
+| **Health** | https://fraud-detection-ml-api-l8s7.onrender.com/health |
 
 
-Production-ready fraud detection system built with XGBoost, FastAPI,
-Celery, Redis, Docker, and Prometheus.
+Production-ready fraud detection system built with XGBoost, FastAPI, Celery, Redis, Docker, and Prometheus, featuring a custom FastAPI model-serving layer with versioned model loading, prediction and explanation endpoints, health/status monitoring, drift detection, and hot model reload.
 
 ## Architecture
 
@@ -102,6 +111,21 @@ train_task.delay(activate=False)
 With `DEBUG=true` (the default), `CELERY_TASK_ALWAYS_EAGER=True`, so tasks
 run synchronously in-process — no worker needed for local testing. Set
 `DEBUG=false` in `.env` to use the real worker/broker.
+
+## Streaming Ingestion (Kafka)
+
+In addition to the REST `/predict` endpoint, transactions can be scored as a
+live stream — closer to how production fraud systems actually work, where
+transactions arrive as events rather than one-by-one API calls.
+
+- **`streaming/producer.py`** replays `data/creditcard.csv` onto a Kafka
+  `transactions` topic, simulating live transaction arrivals (the fraud
+  label is dropped from the payload — a real ingestion pipeline wouldn't
+  know it yet).
+- **`streaming/consumer.py`** consumes that topic and scores each
+  transaction using the *same* `ModelStore` the REST API uses
+  (`serving/predict.py`) — one scoring path, no duplicated model logic
+  between the two ingestion methods.
 
 ## Serving (FastAPI)
 
