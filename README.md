@@ -1,10 +1,10 @@
 # Fraud Detection ML Platform
 
-![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen) ![Tests](https://img.shields.io/badge/tests-40%20passed-brightgreen) ![Python](https://img.shields.io/badge/python-3.12-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-enabled-009688) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-blue) ![Redis](https://img.shields.io/badge/Redis-7-red) ![Celery](https://img.shields.io/badge/Celery-enabled-green) ![Docker](https://img.shields.io/badge/Docker-enabled-blue) ![License](https://img.shields.io/badge/license-MIT-yellow)
+![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen) ![Tests](https://img.shields.io/badge/tests-42%20passed-brightgreen) ![Python](https://img.shields.io/badge/python-3.12-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-enabled-009688) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-blue) ![Redis](https://img.shields.io/badge/Redis-7-red) ![Celery](https://img.shields.io/badge/Celery-enabled-green) ![Kafka](https://img.shields.io/badge/Kafka-enabled-black) ![Docker](https://img.shields.io/badge/Docker-enabled-blue) ![License](https://img.shields.io/badge/license-MIT-yellow)
 
 
 [![CI](https://github.com/andugetachew/fraud-detection-ml/actions/workflows/ci.yml/badge.svg)](https://github.com/andugetachew/fraud-detection-ml/actions)
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://github.com/andugetachew/fraud-detection-ml/blob/main/docs/fraud-detection-api.postman_collection.json)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://github.com/andugetachew/fraud-detection
 
 ## 🌐 Live
 
@@ -14,6 +14,10 @@
 | **Docs** | https://fraud-detection-ml-api-l8s7.onrender.com/docs |
 | **Health** | https://fraud-detection-ml-api-l8s7.onrender.com/health |
 
+- 42 automated tests
+- 95% code coverage
+- Unit + integration test layers, including live FastAPI endpoint tests (auth, rate limiting, predictions) and Kafka streaming consumer/producer tests
+- 0 failed tests
 
 Production-ready fraud detection system built with XGBoost, FastAPI, Celery, Redis, Docker, and Prometheus, featuring a custom FastAPI model-serving layer with versioned model loading, prediction and explanation endpoints, health/status monitoring, drift detection, and hot model reload.
 
